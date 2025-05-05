@@ -1,12 +1,13 @@
 # Application Architecture Diagram Explanation
 
-This document provides an extensive explanation of the components and interactions shown in the application architecture diagrams for the containerised AFL Talking Platform project.
+This document provides an extensive explanation of the components and interactions shown in the application architecture diagrams for the containerised The Book Discovery Platform project.
 
 ---
 
 ##  Diagram 1: High-Level Application Architecture
 
 ![High-Level Diagram](./High-level-AAD.jpg)
+High-Level Diagram
 
 ### Components:
 - **Frontend (React + Vite)**
@@ -38,6 +39,7 @@ This document provides an extensive explanation of the components and interactio
 ## Diagram 2: CI/CD Pipeline Architecture
 
 ![CI/CD Workflow](./AAD-CICD-flow.jpg)
+CI/CD Workflow
 
 ### Components:
 - **GitHub Repository**
@@ -64,7 +66,8 @@ This document provides an extensive explanation of the components and interactio
 
 ## Diagram 3: Containerisation Architecture
 
-![Container Architecture](./AAD-container-architecture.jpg)
+![Container Architecture](./AAD-container-architecture.jpg) 
+Container Architecture
 
 ### Components:
 - **Multi-Stage Dockerfile**
