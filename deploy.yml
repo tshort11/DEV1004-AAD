@@ -10,20 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      VITE_API_URL: ${{ https://book-api.com }}
+      IMAGE_REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Extract version and create tag
+        id: vars
+        run: |
+          VERSION=$(jq -r .version package.json)
+          GIT_SHA=${GITHUB_SHA::7}
+          TAG=prod-v${VERSION}-${GIT_SHA}
+          echo "version_tag=$TAG" >> $GITHUB_OUTPUT
 
-      - name: Build Docker image
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.IMAGE_REGISTRY }} -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image with build arguments
         run: |
           docker build \
-            --build-arg VITE_API_URL=$VITE_API_URL \
-            -t ghcr.io/${{ github.repository }}:latest .
+            --build-arg VITE_API_URL=${{ https://book-api.com}} \
+            -t ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.version_tag }} .
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}:latest
+        run: |
+          docker push ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.version_tag }}
+
