@@ -1,4 +1,25 @@
+# Ignore node_modules (should always be installed in image)
 node_modules
+
+# Ignore build artifacts if present
 dist
+build
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Git & IDE metadata
 .git
+.gitignore
+.vscode
+*.swp
+
+# Logs and temp files
 *.log
+*.tmp
+*.cache
+.env.local
+.env.*
+!env.production      # Include production env if explicitly needed
+

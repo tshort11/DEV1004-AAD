@@ -5,11 +5,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
     ports:
       - "5173:5173"
     volumes:
       - .:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://localhost:3000
+    env_file:
+      - .env
