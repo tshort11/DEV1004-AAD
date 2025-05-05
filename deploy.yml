@@ -26,15 +26,29 @@ jobs:
           echo "version_tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.IMAGE_REGISTRY }} -u ${{ github.actor }} --password-stdin
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create .env.production file
+        run: |
+          echo "VITE_API_URL=${{ secrets.BOOK_API_URL }}" >> .env.production
+          echo "AUTH_TOKEN=${{ secrets.BOOK_API_TOKEN }}" >> .env.production
 
       - name: Build Docker image with build arguments
         run: |
           docker build \
-            --build-arg VITE_API_URL=${{ https://book-api.com}} \
+            --build-arg VITE_API_URL=${{ secrets.BOOK_API_URL }} \
             -t ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.version_tag }} .
+      
+      - name: Test image runs
+        run: |
+          docker run --rm ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.version_tag }} echo "Image works"
 
       - name: Push Docker image
         run: |
           docker push ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.version_tag }}
+
 

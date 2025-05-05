@@ -62,7 +62,7 @@ This document provides an extensive explanation of the components and interactio
 
 ---
 
-## 🐳 Diagram 3: Containerization Architecture
+## Diagram 3: Containerisation Architecture
 
 ![Container Architecture](./AAD-container-architecture.jpg)
 
